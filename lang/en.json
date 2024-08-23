@@ -1,0 +1,96 @@
+{
+
+    "dashboard": "Dashboard",
+    "trash": "Trash",
+    "settings": "Settings",
+
+
+    "/////////////////////////////////////////////////////////// Attribute" : "",
+    "name": "Name",
+    "User Name": "User Name",
+    "description": "Description",
+    "image": "Image",
+    "avatar": "Avatar",
+    "title": "Title",
+    "actions": "Actions",
+    "is_active": "Is Active",
+    "active": "Active",
+    "not active": "Not Active",
+    "status": "Status",
+    "category_id": "Category Id",
+
+
+    "/////////////////////////////////////////////////////////// Status" : "",
+    "pinned": "Pinned",
+    "published": "Published",
+    "blocked": "Blocked",
+    "in progress": "In progress",
+    "done": "Done",
+    "unknown": "Unknown",
+
+
+
+    "/////////////////////////////////////////////////////////// Filters" : "",
+    "filter by name": "filter by name",
+    "filter by description": "filter by description",
+    "filter by title": "filter by title",
+    "filter by status": "filter by status",
+    "filter by user": "filter by user",
+    "filter by is_active": "filter by activation",
+    "filter by category_id": "filter by category",
+
+
+
+
+    "/////////////////////////////////////////////////////////// Form" : "",
+    "name_en": "Name (EN)",
+    "name_ar": "Name (AR)",
+    "enter name": "enter name",
+    "enter name_en": "enter name (EN)",
+    "enter name_ar": "enter name (AR)",
+    "description_en": "Description (EN)",
+    "description_ar": "Description (AR)",
+    "enter description": "enter description",
+    "enter description_en": "enter description (EN)",
+    "enter description_ar": "enter description (AR)",
+    "title_en": "Title (EN)",
+    "title_ar": "Title (AR)",
+    "enter title": "enter title",
+    "enter title_en": "enter title (EN)",
+    "enter title_ar": "enter title (AR)",
+
+    "///////////////////////////////////////////////////////////" : "",
+    "items": "Items",
+    "item list": "Item List",
+    "create item": "Create Item",
+    "edit item": "Edit Item",
+    "show item": "Show Item",
+    "item trash list": "Item Trash List",
+    "select category": "Select Category",
+
+    "posts": "Posts",
+    "post list": "Post List",
+    "create post": "Create Post",
+    "edit post": "Edit Post",
+    "show post": "Show Post",
+    "post trash list": "Post Trash List",
+
+
+    "categories": "Categories",
+    "category list": "Category List",
+    "create category": "Create Category",
+    "edit category": "Edit Category",
+    "show category": "Show Category",
+    "category trash list": "Category Trash List",
+
+
+    "users": "Users",
+    "user list": "User List",
+    "Create User": "Create User",
+    "edit user": "Edit User",
+    "show user": "Show User",
+    "user trash list": "User Trash List"
+
+
+
+}
