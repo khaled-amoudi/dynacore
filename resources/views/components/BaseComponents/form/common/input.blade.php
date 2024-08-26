@@ -6,6 +6,8 @@
     'placeholder' => 'enter ' . $name,
     'cols' => '6',
     'condition' => null,
+    'required' => false,
+    'others' => '',
 ])
 
 @php
@@ -13,18 +15,17 @@
     $conditionId = $condition['id'] ?? null;
     $conditionValue = $condition['value'] ?? null;
 @endphp
-
 <div class="mb-7 col-12 col-sm-{{ $cols }} {{ $conditionId ? 'conditional-input' : '' }}"
     @if ($conditionId) data-condition-id="{{ $conditionId }}"
         data-condition-value="{{ $conditionValue }}"
         style="display: none;" @endif>
     <label class="form-label" for="{{ $name }}">{{ __($label) }}</label>
-    @if ($attributes->get('required') == true)
+    @if ($required)
         <small class="ms-2 fs-2 text-danger">&#42;</small>
     @endif
     <input type="{{ $type }}" name="{{ $name }}" value="{{ old($name, $value) }}"
         id="{{ $name }}" placeholder="{{ __($placeholder) }}"
-        {{ $attributes->class(['form-control', 'is-invalid' => $errors->has($name)]) }} {{ $attributes }}>
+        {{ $attributes->class(['form-control', 'is-invalid' => $errors->has($name)]) }} {{ $required ? 'required="required"' : '' }} {!! $others !!} {{ $attributes }}>
     @error($name)
         <small class="text-danger">{{ $message }}</small>
     @enderror

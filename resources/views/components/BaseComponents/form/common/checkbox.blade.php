@@ -6,6 +6,8 @@
     'display' => 'inline',
     'cols' => '12',
     'condition' => null,
+    'required' => false,
+    'others' => '',
 ])
 @php
     // Parse the condition if provided
@@ -17,7 +19,7 @@
         data-condition-value="{{ $conditionValue }}"
         style="display: none;" @endif>
     <label for="{{ $name }}" class="form-label">{{ __($label) }}</label>
-    @if ($attributes->get('required') == true)
+    @if ($required)
         <small class="ms-2 fs-2 text-danger">&#42;</small>
     @endif
     <div class="{{ $display == 'inline' ? 'd-flex' : '' }}">
@@ -25,7 +27,7 @@
             <div
                 class="{{ $display == 'inline' ? 'ms-8' : '' }} mb-3 form-check form-check-custom form-check-solid form-check-{{ $display }}">
                 <input class="form-check-input" name="{{ $name . '[]' }}" type="checkbox" id="{{ $name . '_' . $key }}"
-                    value="{{ $key }}" @checked(old($name, $value) == $key) {{ $attributes }}>
+                    value="{{ $key }}" @checked(old($name, $value) == $key) {{ $required ? 'required="required"' : '' }} {!! $others !!} {{ $attributes }}>
                 <label class="form-check-label" for="{{ $name . '_' . $key }}">{{ __($label) }}</label>
             </div>
         @endforeach

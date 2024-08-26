@@ -44,7 +44,7 @@
 
             $(window).scroll(function() {
                 const button = $('.kh_breadcrumb_move');
-                const formToolbar = $('.card-toolbar');
+                const formToolbar = $('.kh_form-card-toolbar');
                 const breadcrumbToolbar = $('.card-toolbar-actions');
 
                 if ($(window).scrollTop() > 100) {
@@ -58,4 +58,35 @@
 
     <script src="{{ asset('cms/assets/js/common/performActions/perform-update.js') }}"></script>
     <script src="{{ asset('cms/assets/js/common/js/form.js') }}"></script>
+    <script src="{{ asset('cms/assets/plugins/custom/formrepeater/formrepeater.bundle.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('.kh_repeater').each(function() {
+                var repeater_id = $(this).attr('id');
+                $('#' + repeater_id).repeater({
+                    initEmpty: false,
+                    // defaultValues: {
+                    //     'text-input': 'foo'
+                    // },
+                    show: function() {
+                        $(this).show(function() {
+                            // Re-init select2
+                            $(this).find('select').next('.select2-container').remove();
+                            $(this).find('select').select2({
+                                dropdownAutoWidth: true
+                            });
+
+                            $(this).find('input.daterangepicker').daterangepicker();
+
+                            // new Tagify(this.querySelector('.tagify'));
+                        });
+                    },
+                    hide: function(deleteElement) {
+                        $(this).hide(deleteElement);
+                    },
+                    // isFirstItemUndeletable: true
+                });
+            });
+        });
+    </script>
 @endpush

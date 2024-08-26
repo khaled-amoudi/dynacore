@@ -2,7 +2,7 @@
     <h3 class="card-title align-items-start text-gray-700 fw-bold flex-column">
         {{ __($formTitle) }}
     </h3>
-    <div class="card-toolbar">
+    <div class="card-toolbar kh_form-card-toolbar">
         <div class="kh_breadcrumb_move">
             <a href="{{ url()->previous() }}" class="btn btn-cancel text-gray-600 shadow px-3 mx-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"

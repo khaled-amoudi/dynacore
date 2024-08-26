@@ -5,6 +5,8 @@
     'placeholder' => 'enter ' . $name,
     'cols' => '6',
     'condition' => null,
+    'required' => false,
+    'others' => '',
 ])
 
 @php
@@ -19,13 +21,15 @@
         data-condition-value="{{ $conditionValue }}"
         style="display: none;" @endif>
     <label class="form-label" for="{{ $name }}">{{ __($label) }}</label>
-    @if ($attributes->get('required') == true)
+    @if ($required)
         <small class="ms-2 fs-2 text-danger">&#42;</small>
     @endif
-    <input name="{{ $name }}" value="{{ old($name, $value) }}" placeholder="{{ __($placeholder) }}"
-        id="{{ $name }}"
-        {{ $attributes->class(['form-control', 'form-control-solid', 'text-dark', 'is-invalid' => $errors->has($name)]) }}
-        {{ $attributes }}>
+    <div style="position: relative !important">
+        <input name="{{ $name }}" value="{{ old($name, $value) }}" placeholder="{{ __($placeholder) }}"
+            id="{{ $name }}" style="position: static !important"
+            {{ $attributes->class(['form-control', 'form-control-solid', 'text-dark', 'daterangepicker', 'is-invalid' => $errors->has($name)]) }}
+            {{ $required ? 'required="required"' : '' }} {!! $others !!} {{ $attributes }}>
+    </div>
     @error($name)
         <small class="text-danger">{{ $message }}</small>
     @enderror

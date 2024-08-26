@@ -26,7 +26,9 @@ class CategoryRequest
     {
         return [
             'name' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'items_name_en' => 'required',
+            // 'items.*.items_name_en' => 'required',
             // 'image' => [ 'image' , 'max:1024' , 'mimes:jpeg,png,jpg,gif'],
         ];
     }

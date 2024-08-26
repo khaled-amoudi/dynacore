@@ -1,4 +1,5 @@
-@props(['name', 'value' => '', 'options' => [], 'label' => $name, 'get' => null, 'searchable' => true, 'cols' => '6', 'condition' => null])
+@props(['name', 'value' => '', 'options' => [], 'label' => $name, 'get' => null, 'searchable' => true, 'cols' => '6', 'condition' => null,     'required' => false,
+    'others' => '',])
 
 @php
     // Parse the condition if provided
@@ -10,7 +11,7 @@
         data-condition-value="{{ $conditionValue }}"
         style="display: none;" @endif>
     <label for="{{ $name }}" class="form-label">{{ __($label) }}</label>
-    @if ($attributes->get('required') == true)
+    @if ($required)
         <small class="ms-2 fs-2 text-danger">&#42;</small>
     @endif
     <select name="{{ $name }}" id="{{ $name }}" @class([
@@ -20,7 +21,7 @@
     ])
         @if ($searchable == true) data-control="select2" data-placeholder="{{ __($label) }}" @else aria-label="Default select example" @endif
         @if ($allow_clear == true) data-allow-clear="true" @endif
-        {{ $attributes }}>
+        {{ $required ? 'required="required"' : '' }} {!! $others !!} {{ $attributes }}>
         <option value=""></option>
         @foreach ($options as $key => $label)
             <option value="{{ $key }}" @selected(old($name, $value) == $key)>{{ __($label) }}</option>

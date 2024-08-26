@@ -1,4 +1,5 @@
-@props(['name', 'value' => '', 'path' => 'storage/', 'label' => $name, 'cols' => '6', 'condition' => null])
+@props(['name', 'value' => '', 'path' => 'storage/', 'label' => $name, 'cols' => '6', 'condition' => null,     'required' => false,
+    'others' => '',])
 @php
     // Parse the condition if provided
     $conditionId = $condition['id'] ?? null;
@@ -10,8 +11,8 @@
         style="display: none;" @endif>
     <!--begin::Image input-->
     <div>
-        <label for="{{ $name }}" class="form-label">{{ $label }}</label>
-        @if ($attributes->get('required') == true)
+        <label for="{{ $name }}" class="form-label">{{ __($label) }}</label>
+        @if ($required)
             <small class="ms-2 fs-2 text-danger">&#42;</small>
         @endif
     </div>
@@ -19,7 +20,7 @@
         style="background-image: url({{ asset('cms/assets/media/custom/default_no-image-available-1.png') }})">
         <!--begin::Image preview wrapper-->
         <div class="image-input-wrapper w-125px h-125px"
-            style="background-image: url({{ $value ?? asset('cms/assets/media/custom/default_no-image-available-1.png') }})">
+            style="background-image: url({{ $value != '' ? $value : asset('cms/assets/media/custom/default_no-image-available-1.png') }})">
         </div>
 
         <!--begin::Edit button-->
@@ -30,17 +31,17 @@
 
             <!--begin::Inputs-->
             <input type="file" id="{{ $name }}" name="{{ $name }}" accept=".png, .jpg, .jpeg"
-                {{ $attributes }}
+                {{ $attributes }} {{ $required ? 'required="required"' : '' }} {!! $others !!}
                 {{ $attributes->class([
                     'is-invalid' => $errors->has($name),
                 ]) }}
-                @if ($attributes->has('required')) required @endif>
-            @error($name)
-                <small class="text-danger">{{ $message }}</small>
-            @enderror
-            <input type="hidden" name="avatar_remove" />
+                {{ $attributes->has('required') == true ? 'required' : '' }} >
+            {{-- <input type="hidden" name="avatar_remove" /> --}}
             <!--end::Inputs-->
         </label>
+        @error($name)
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
         <!--end::Edit button-->
 
         <!--begin::Cancel button-->

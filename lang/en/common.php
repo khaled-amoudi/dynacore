@@ -32,6 +32,8 @@ return [
     'manage' => 'manage',
     'delete' => 'delete',
     'restore' => 'restore',
+    'add' => 'add',
+    'actions' => 'actions',
 
     'Delete This Record' => 'Delete This Record',
     'Delete All Records' => 'Delete All Records',

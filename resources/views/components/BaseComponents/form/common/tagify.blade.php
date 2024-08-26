@@ -7,6 +7,8 @@
     'cols' => '6',
     'value' => '',
     'condition' => null,
+    'required' => false,
+    'others' => '',
 ])
 @php
     // Parse the condition if provided
@@ -18,15 +20,20 @@
         data-condition-value="{{ $conditionValue }}"
         style="display: none;" @endif>
     <label for="#{{ $name }}" class="form-label">{{ __($label) }}</label>
-    @if ($attributes->get('required') == true)
+    @if ($required)
         <small class="ms-2 fs-2 text-danger">&#42;</small>
     @endif
     <input name="{{ $name }}" placeholder="{{ __($placeholder) }}" @class([
         'form-control',
         'form-control-solid',
+        'tagify',
         'is-invalid' => $errors->has($name),
     ])
-        value="{{ $value }}" id="{{ $name }}" {{ $attributes }} />
+        value="{{ $value }}" id="{{ $name }}" {{ $required ? 'required="required"' : '' }} {!! $others !!} {{ $attributes }} />
+
+    @error($name)
+        <small class="text-danger">{{ $message }}</small>
+    @enderror
     @php
         $whitelist = array_map(
             function ($value, $key) {

@@ -168,17 +168,22 @@ class BaseController extends Controller
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    public function createFormBuilder($model)
+    {
+        return [];
+    }
     public function create()
     {
         $this->authorize('create-' . $this->resourceName());
         $model = new $this->model;
 
         $data['resource_name'] = $this->resourceName();
-        $data['form_data'] = $this->formData();
+        $data['form_data'] = $this->formData($model);
         $data['route_index'] = $this->_index_link();
-        $data['additionalData'] = $this->createAdditionalData();
 
-        return response()->view($this->_create_link(), compact('model', 'data'));
+        $formInputs = $this->createFormBuilder($model);
+
+        return response()->view($this->_create_link(), compact('model', 'data', 'formInputs'));
     }
 
     public function store(Request $request)
@@ -240,11 +245,12 @@ class BaseController extends Controller
         }
 
         $data['resource_name'] = $this->resourceName();
-        $data['form_data'] = $this->formData();
+        $data['form_data'] = $this->formData($model);
         $data['route_index'] = $this->_index_link();
-        $data['additionalData'] = $this->editAdditionalData($id);
 
-        return response()->view($this->_edit_link(), compact('model', 'data'));
+        $formInputs = $this->createFormBuilder($model);
+
+        return response()->view($this->_edit_link(), compact('model', 'data', 'formInputs'));
     }
 
     public function update(Request $request, $id)
@@ -626,9 +632,23 @@ class BaseController extends Controller
         $resource_name = strtolower(preg_replace('/(?<=\w)([A-Z])/', '_$1', $basename));
         return $resource_name;
     }
-    public function formData()
+
+    public function formData($model)
     {
-        return [];
+        $formBuilder = $this->createFormBuilder($model);
+        $formData = [];
+
+        foreach ($formBuilder as $field) {
+            if (in_array($field['formtype'], ['switch', 'radio', 'checkbox', 'image', 'file', 'repeater', 'repeater_table'])) {
+                $formData[] = [$field['name'], $field['formtype']];
+            } else {
+                $formData[] = $field['name'];
+            }
+        }
+        return $formData;
+        // return [
+        //     'category_id', 'name_en', 'name_ar', 'description_en', 'description_ar', 'status', ['is_active', 'switch'], ['image', 'image']
+        // ];
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -643,19 +663,6 @@ class BaseController extends Controller
     {
         return null;
     }
-    public function createAdditionalData()
-    {
-        return $this->createEditAdditionalData();
-    }
-    public function editAdditionalData($id)
-    {
-        return $this->createEditAdditionalData();
-    }
-    public function createEditAdditionalData()
-    {
-        return null;
-    }
-
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////

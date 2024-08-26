@@ -8,55 +8,15 @@ use App\Models\Category;
 class ItemController extends BaseController
 {
 
-
-    public function create()
+    public function createFormBuilder($model)
     {
-        $this->authorize('create-' . $this->resourceName());
-        $model = new $this->model;
-
-        $data['resource_name'] = $this->resourceName();
-        $data['form_data'] = $this->formData();
-        $data['route_index'] = $this->_index_link();
-        $data['additionalData'] = $this->createAdditionalData();
-        $formInputs = [
-            [
-                'formtype' => 'checkbox',
-                'name' => 'type',
-                'id' => 'type',
-                'label' => 'type',
-                'value' => '',
-                'display' => 'inline',
-                'options' => [
-                    1 => 'label 1',
-                    2 => 'label 2',
-                    3 => 'label 3',
-                ],
-                'required' => 'required',
-                'condition' => null,
-                'cols' => '6',
-            ],
-            [
-                'formtype' => 'radio',
-                'name' => 'type_radio',
-                'id' => 'type_radio',
-                'label' => 'type_radio',
-                'value' => '',
-                'display' => 'inline',
-                'options' => [
-                    1 => 'label 1',
-                    2 => 'label 2',
-                    3 => 'label 3',
-                ],
-                'required' => 'required',
-                'condition' => null,
-                'cols' => '6',
-            ],
+        return [
             [
                 'formtype' => 'select',
                 'name' => 'category_id',
                 'id' => 'category_id',
                 'label' => 'category_id',
-                'value' => '',
+                'value' => $model['category_id'],
                 'options' => Category::pluck('name', 'id')->toArray(),
                 'searchable' => true,
                 'allow_clear' => true,
@@ -76,131 +36,8 @@ class ItemController extends BaseController
                 'label' => 'name_en',
                 'placeholder' => 'enter name_en',
                 'type' => 'text',
-                'value' => '',
-                'required' => true,
-                'condition' => null,
-                'cols' => '6',
-            ],
-            [
-                'formtype' => 'input',
-                'name' => 'name_ar',
-                'id' => 'name_ar',
-                'label' => 'name_ar',
-                'placeholder' => 'enter name_ar',
-                'type' => 'text',
-                'value' => '',
-                'required' => 'required',
-                'condition' => null,
-                'cols' => '6',
-            ],
-            [
-                'formtype' => 'textarea',
-                'name' => 'description_en',
-                'id' => 'description_en',
-                'label' => 'description_en',
-                'placeholder' => 'enter description_en',
-                'value' => '',
-                'required' => 'required',
-                'condition' => null,
-                'rows' => '3',
-                'cols' => '12'
-            ],
-            [
-                'formtype' => 'textarea',
-                'name' => 'description_ar',
-                'id' => 'description_ar',
-                'label' => 'description_ar',
-                'placeholder' => 'enter description_ar',
-                'value' => '',
-                'required' => 'required',
-                'condition' => null,
-                'rows' => '3',
-                'cols' => '12'
-            ],
-            [
-                'formtype' => 'select',
-                'name' => 'status',
-                'id' => 'status',
-                'label' => 'status',
-                'value' => '',
-                'options' => [
-                    '0' => 'pinned',
-                    '1' => 'published',
-                    '2' => 'blocked',
-                ],
-                'searchable' => true,
-                'allow_clear' => true,
-                'cols' => '6',
-                'condition' => null
-            ],
-            [
-                'formtype' => 'switch',
-                'name' => 'is_active',
-                'id' => 'is_active',
-                'label' => 'is_active',
-                'placeholder' => 'is_active',
-                'value' => '',
-                'required' => 'required',
-                'condition' => null,
-                'cols' => '6'
-            ],
-            [
-                'formtype' => 'image',
-                'name' => 'image',
-                'path' => 'storage/',
-                'label' => 'image upload',
-                'value' => '',
-                'required' => 'required',
-                'condition' => ['id' => 'is_active', 'value' => 'true'],
-                'cols' => '6',
-            ],
-        ];
-
-        return response()->view($this->_create_link(), compact('model', 'data', 'formInputs'));
-    }
-
-
-    public function edit($id)
-    {
-        $this->authorize('edit-' . $this->resourceName());
-
-
-        $object = $this->getModel()::find($id);
-
-        $objectResource = $this->getResource($object);
-        $model = $objectResource->resolve();
-
-        if (!$model) {
-            return response()->json(['type' => 'error', 'message' => __('common.does_not_exist', ['model' => __($this->resourceName())])], 400);
-        }
-
-        $data['resource_name'] = $this->resourceName();
-        $data['form_data'] = $this->formData();
-        $data['route_index'] = $this->_index_link();
-        $data['additionalData'] = $this->editAdditionalData($id);
-        $formInputs = [
-
-            [
-                'formtype' => 'select',
-                'name' => 'category_id',
-                'id' => 'category_id',
-                'label' => 'category_id',
-                'value' => $model['category_id'],
-                'options' => Category::pluck('name', 'id')->toArray(),
-                'searchable' => true,
-                'allow_clear' => true,
-                'cols' => '12',
-                'condition' => null
-            ],
-            [
-                'formtype' => 'input',
-                'name' => 'name_en',
-                'id' => 'name_en',
-                'label' => 'name_en',
-                'placeholder' => 'enter name_en',
-                'type' => 'text',
                 'value' => $model['name_en'],
-                'required' => 'required',
+                'required' => true,
                 'condition' => null,
                 'cols' => '6',
             ],
@@ -278,9 +115,8 @@ class ItemController extends BaseController
                 'cols' => '6',
             ],
         ];
-
-        return response()->view($this->_edit_link(), compact('model', 'data', 'formInputs'));
     }
+
 
 
 
@@ -413,15 +249,6 @@ class ItemController extends BaseController
 
     //////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////
-
-
-    public function formData()
-    {
-        return [
-            ['type', 'checkbox'], ['type_radio', 'radio'], 'category_id', 'name_en', 'name_ar', 'description_en', 'description_ar', 'status', ['is_active', 'switch'], ['image', 'image']
-        ];
-    }
 
 
     public function createEditAdditionalData()

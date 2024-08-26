@@ -47,6 +47,49 @@ function performUpdate(id) {
                 });
 
                 formData.append(inputId, JSON.stringify(codesArray));
+            } else if (inputType === "repeater") {
+                console.log('repeater id: kh_repeater_' + inputId);
+
+                document.querySelectorAll('.kh_repeater').forEach(function(repeater) {
+                    let repeaterListElement = repeater.querySelector('[data-repeater-list]');
+                    let repeaterListName = repeaterListElement.getAttribute('data-repeater-list');
+                    let repeaterItems = repeater.querySelectorAll('[data-repeater-item]');
+
+                    repeaterItems.forEach(function(item, index) {
+                        item.querySelectorAll('input, select, textarea').forEach(function(field) {
+                            console.log(field.getAttribute('name'));
+
+                            let fieldName = field.getAttribute('name').split('[').pop().replace(']', ''); //field.getAttribute('name');
+                            let fieldValue = field.value;
+
+                            // Create the form data key in the format `repeaterName[index][fieldName]`
+                            let formDataKey = `${repeaterListName}[${index}][${fieldName}]`;
+
+                            // Append the field to the formData object
+                            formData.append(formDataKey, fieldValue);
+                        });
+                    });
+                });
+            } else if (inputType === "repeater_table") {
+                const tableRows = document.querySelectorAll(
+                    ".dynamic-table tbody tr"
+                );
+                tableRows.forEach((row, rowIndex) => {
+                    row.querySelectorAll("input").forEach(
+                        (field) => {
+                            let fieldName = field
+                                .getAttribute("name")
+                                .replace(/^.*?\[(\d+)\]/, "");
+                            let fieldValue = field.value;
+
+                            // Construct the formDataKey to include rowIndex and the fieldName
+                            let formDataKey = `${inputId}[${rowIndex}]${fieldName}`;
+
+                            // Append the field's value to the formData object
+                            formData.append(formDataKey, fieldValue);
+                        }
+                    );
+                });
             }
         }
     }

@@ -14,7 +14,6 @@ class ItemResource extends BaseResource
      */
     public function toArray($request)
     {
-
         return [
             'id' => $this->id,
             // // relation

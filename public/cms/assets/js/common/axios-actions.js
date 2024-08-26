@@ -24,6 +24,8 @@ function x_store(url, data, redirectUrl = null) {
         .catch(function (error) {
             if (error.response.data.errors !== undefined) {
                 toastr_showErrors(error.response.data.errors);
+                alert_showErrors(error.response.data.errors);
+
             } else {
                 toastr_showMessage(error.response.data);
             }

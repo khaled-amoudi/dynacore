@@ -14,6 +14,20 @@
 
 
 @section('content')
+    <div class="row mx-5 mx-md-9 d-none" id="form_errors_alert">
+        <div
+            class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 p-5 mb-10">
+            <div class="d-flex flex-column pe-0 pe-sm-10" id="form_errors_validation_list">
+                <span>The alert component can be used to highlight certain parts of your page for higher content
+                    visibility.</span>
+            </div>
+            <button type="button" onclick="alert_closeAlert()"
+                class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto">
+                <i class="bi bi-x fs-1 text-danger"></i>
+            </button>
+        </div>
+    </div>
+
     <div class="row mx-5 mx-md-9">
         <div class="card shadow-sm mb-5 mb-xl-8">
             <form id="create_form" action="{{ route('dashboard.' . $data['resource_name'] . '.store') }}"
@@ -47,7 +61,7 @@
 
             $(window).scroll(function() {
                 const button = $('.kh_breadcrumb_move');
-                const formToolbar = $('.card-toolbar');
+                const formToolbar = $('.kh_form-card-toolbar');
                 const breadcrumbToolbar = $('.card-toolbar-actions');
 
                 if ($(window).scrollTop() > 100) {
@@ -61,4 +75,33 @@
 
     <script src="{{ asset('cms/assets/js/common/performActions/perform-store.js') }}"></script>
     <script src="{{ asset('cms/assets/js/common/js/form.js') }}"></script>
+    <script src="{{ asset('cms/assets/plugins/custom/formrepeater/formrepeater.bundle.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('.kh_repeater').each(function() {
+                var repeater_id = $(this).attr('id');
+                $('#' + repeater_id).repeater({
+                    initEmpty: false,
+                    // defaultValues: {
+                    //     'text-input': 'foo'
+                    // },
+                    show: function() {
+                        $(this).show(function() {
+                            // Re-init select2
+                            $(this).find('select').next('.select2-container').remove();
+                            $(this).find('select').select2();
+
+                            $(this).find('input.daterangepicker').daterangepicker();
+
+                            // new Tagify(this.querySelector('.tagify'));
+                        });
+                    },
+                    hide: function(deleteElement) {
+                        $(this).hide(deleteElement);
+                    },
+                    // isFirstItemUndeletable: true
+                });
+            });
+        });
+    </script>
 @endpush

@@ -32,6 +32,8 @@ return [
     'manage' => 'إدارة',
     'delete' => 'حذف',
     'restore' => 'إسترجاع',
+    'add' => 'إضافة',
+    'actions' => 'الإجراءات',
 
     'Delete This Record' => 'حذف هذا العنصر',
     'Delete All Records' => 'حذف العناصر المحددة',

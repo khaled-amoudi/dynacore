@@ -23,7 +23,7 @@ class CategoryResource extends BaseResource
             'image' => image_url($this->image),
             'description' => $this->description,
             'is_active' => $this->is_active,
-            'items' => ItemResource::collection($this->whenLoaded('items')),
+            'items' => ItemResource::collection($this->whenLoaded('items'))->toArray($request),
         ];
     }
 

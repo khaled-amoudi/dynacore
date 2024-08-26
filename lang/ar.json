@@ -92,6 +92,8 @@
     "create user": "إضافة مستخدم",
     "edit user": "تعديل المستخدم",
     "show user": "عرض المستخدم",
-    "user trash list": "أرشيف المستخدمين"
+    "user trash list": "أرشيف المستخدمين",
 
+
+    "image upload": "إرفاق صورة"
 }

@@ -14,7 +14,10 @@ class MakeCrud extends Command
      * @var string
      */
     protected $signature = 'make:crud {resource} {tableName?}';
+    // EXAMPLE:
     // php artisan make:crud category categories
+
+
     /**
      * The console command description.
      *

@@ -7,6 +7,8 @@
     'rows' => 2,
     'cols' => '12',
     'condition' => null,
+    'required' => false,
+    'others' => '',
 ])
 @php
     // Parse the condition if provided
@@ -18,12 +20,12 @@
         data-condition-value="{{ $conditionValue }}"
         style="display: none;" @endif>
     <label for="{{ $id }}" class="form-label">{{ __($label) }}</label>
-    @if ($attributes->get('required') == true)
+    @if ($required)
         <small class="ms-2 fs-2 text-danger">&#42;</small>
     @endif
     {{-- <div id="{{ $id }}"></div> --}}
     <textarea class="form-control mb-4" id="{{ $id }}" name="{{ $name }}" rows="{{ $rows }}"
-        placeholder="{{ __($placeholder) }}" {{ $attributes }}>{{ old($name, $value ?? '') }}</textarea>
+        placeholder="{{ __($placeholder) }}" {{ $required ? 'required="required"' : '' }} {!! $others !!} {{ $attributes }}>{{ old($name, $value ?? '') }}</textarea>
     @error($name)
         <small class="text-danger">{{ $message }}</small>
     @enderror

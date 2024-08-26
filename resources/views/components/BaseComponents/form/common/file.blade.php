@@ -6,7 +6,8 @@
     'placeholder' => 'enter '. $name,
     'cols' => '6',
     'condition' => null,
-
+    'required' => false,
+    'others' => '',
 ])
 @php
 // Parse the condition if provided
@@ -17,11 +18,11 @@ $conditionValue = $condition['value'] ?? null;
     @if ($conditionId) data-condition-id="{{ $conditionId }}"
         data-condition-value="{{ $conditionValue }}"
         style="display: none;" @endif>
-    <label for="{{ $name }}" class="form-label">{{ __($label) }}</label> @if($attributes->get('required') == true)<small class="ms-2 fs-2 text-danger">&#42;</small>@endif
+    <label for="{{ $name }}" class="form-label">{{ __($label) }}</label> @if($required)<small class="ms-2 fs-2 text-danger">&#42;</small>@endif
     <input name="{{ $name }}" type="file" id="{{ $name }}" {{ $attributes->class([
         'form-control',
         'is-invalid' => $errors->has($name)
-    ]) }} {{ $attributes }}>
+    ]) }} {{ $required ? 'required="required"' : '' }} {!! $others !!} {{ $attributes }}>
     @error($name)
         <small class="text-danger">{{ $message }}</small>
     @enderror
