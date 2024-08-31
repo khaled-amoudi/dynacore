@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\BaseController;
 use App\Models\Category;
+use App\Models\Item;
 
 class ItemController extends BaseController
 {
@@ -21,14 +22,27 @@ class ItemController extends BaseController
                 'searchable' => true,
                 'allow_clear' => true,
                 'cols' => '12',
-                // 'get' => [
-                //     'route' => route('dashboard.ajax.getOptions'),
-                //     'id' => 'category_id',
-                //     'target' => 'status',
-                //     'input' => ''
-                // ],
-                'condition' => null
+                'condition' => null,
+                'get' => [
+                    'ajax' => route('dashboard.ajax.getOptions'),
+                    'target' => 'target id'
+                ],
+                'add' => [
+                    'action' => route('dashboard.category.store'),
+                    'resource' => 'category',
+                    'ajax_for_new_options' => route('dashboard.ajax.get_category_select'),
+                    'formInputs' => app(CategoryController::class)->createFormBuilder(new Category()),
+                    'formData' => app(CategoryController::class)->formData(new Category()),
+                ]
             ],
+            // [
+            //     'formtype' => 'modal',
+            //     'name' => 'category_modal',
+            //     'action' => 'dashboard.category.store',
+            //     'resource' => 'category',
+            //     'formInputs' => app(CategoryController::class)->createFormBuilder(new Category()),
+            //     'formData' => app(CategoryController::class)->formData(new Category()),
+            // ],
             [
                 'formtype' => 'input',
                 'name' => 'name_en',
@@ -249,11 +263,4 @@ class ItemController extends BaseController
 
     //////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////
-
-
-    public function createEditAdditionalData()
-    {
-        $category = Category::get(['id', 'name']);
-        return $category;
-    }
 }

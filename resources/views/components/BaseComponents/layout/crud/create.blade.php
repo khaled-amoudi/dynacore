@@ -74,6 +74,7 @@
     </script>
 
     <script src="{{ asset('cms/assets/js/common/performActions/perform-store.js') }}"></script>
+    <script src="{{ asset('cms/assets/js/common/performActions/perform-modal-store.js') }}"></script>
     <script src="{{ asset('cms/assets/js/common/js/form.js') }}"></script>
     <script src="{{ asset('cms/assets/plugins/custom/formrepeater/formrepeater.bundle.js') }}"></script>
     <script>
@@ -100,6 +101,66 @@
                         $(this).hide(deleteElement);
                     },
                     // isFirstItemUndeletable: true
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Select all elements with the data-get-ajax attribute
+            $('select[data-get-ajax]').each(function() {
+                var $select = $(this);
+                var ajaxRoute = $select.data('get-ajax'); // Get the ajax route from data attribute
+                var targetSelectId = $select.data('get-select'); // Get the target select ID
+                var $targetElement = $('#' + targetSelectId); // Find the target element
+                // Listen for changes on the select element
+                $select.on('change', function() {
+                    var selectedValue = $(this).val(); // Get the selected value
+
+                    if (!selectedValue) {
+                        $targetElement.empty();
+                        $targetElement.val('');
+                        return; // Stop further execution
+                    }
+
+
+                    // Send the AJAX request
+                    $.ajax({
+                        url: ajaxRoute, // The route from the data-get-ajax attribute
+                        method: 'GET',
+                        data: {
+                            value: selectedValue
+                        }, // Pass the selected value
+                        success: function(response) {
+                            // Check if the response is an array (for select options)
+                            console.log(response);
+
+                            if (typeof response === 'object' && !Array.isArray(
+                                    response)) {
+                                // Clear the current options in the target select
+                                $targetElement.empty();
+
+                                // Add a placeholder option if needed
+                                // $targetElement.append(new Option('', ''));
+
+                                // Populate the target select with new options from the response
+                                $.each(response, function(key, value) {
+                                    $targetElement.append(new Option(value,
+                                        key));
+                                });
+
+                                // Trigger the change event for the target select to ensure any dependent functionality is activated
+                                $targetElement.trigger('change');
+                            } else {
+                                // If the response is not an array, assume it's a single value for an input field
+                                $targetElement.val(response);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error:', error);
+                            // Optionally, handle the error, e.g., show an alert
+                        }
+                    });
                 });
             });
         });

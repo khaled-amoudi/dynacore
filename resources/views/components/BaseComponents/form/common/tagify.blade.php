@@ -8,6 +8,7 @@
     'value' => '',
     'condition' => null,
     'required' => false,
+    'should_be_in_list' => true,
     'others' => '',
 ])
 @php
@@ -29,7 +30,8 @@
         'tagify',
         'is-invalid' => $errors->has($name),
     ])
-        value="{{ $value }}" id="{{ $name }}" {{ $required ? 'required="required"' : '' }} {!! $others !!} {{ $attributes }} />
+        value="{{ $value }}" id="{{ $name }}" {{ $required ? 'required="required"' : '' }}
+        {!! $others !!} {{ $attributes }} />
 
     @error($name)
         <small class="text-danger">{{ $message }}</small>
@@ -53,38 +55,45 @@
     document.addEventListener('DOMContentLoaded', function() {
         var name = @json($name);
         var whitelist = @json($whitelist);
+        var should_be_in_list = @json($should_be_in_list);
 
         // The DOM elements you wish to replace with Tagify
         var input = document.querySelector("#" + name);
 
-        // Initialize Tagify script on the above inputs
-        new Tagify(input, {
+        // Initialize Tagify with conditional templates
+        var tagifyOptions = {
             whitelist: whitelist,
             delimiters: null,
-            enforceWhitelist: true,
-            templates: {
-                tag: function(tagData) {
-                    return `<tag title='${tagData.value}' contenteditable='false' spellcheck="false"
-                    class='tagify__tag ${tagData.class ? tagData.class : ""}' ${this.getAttributes(tagData)}>
-                        <x title='remove tag' class='tagify__tag__removeBtn'></x>
-                        <div class="d-flex align-items-center">
-                            <span class='tagify__tag-text'>${tagData.label}</span>
-                        </div>
-                    </tag>`
-                },
-
-                dropdownItem: function(tagData) {
-                    return `<div class='tagify__dropdown__item ${tagData.class ? tagData.class : ""}'>
-                            <span>${tagData.label}</span>
-                        </div>`
-                }
-            },
+            enforceWhitelist: should_be_in_list,
             dropdown: {
                 classname: "tagify__inline__suggestions" + name,
                 enabled: 0, // <- show suggestions on focus
                 closeOnSelect: false // <- do not hide the suggestions dropdown once an item has been selected
             }
-        });
+        };
+
+        // Conditionally add custom templates if should_be_in_list is true
+        if (should_be_in_list) {
+            tagifyOptions.templates = {
+                tag: function(tagData) {
+                    return `<tag title='${tagData.value}' contenteditable='false' spellcheck="false"
+                class='tagify__tag ${tagData.class ? tagData.class : ""}' ${this.getAttributes(tagData)}>
+                    <x title='remove tag' class='tagify__tag__removeBtn'></x>
+                    <div class="d-flex align-items-center">
+                        <span class='tagify__tag-text'>${tagData.label}</span>
+                    </div>
+                </tag>`;
+                },
+                dropdownItem: function(tagData) {
+                    return `<div class='tagify__dropdown__item ${tagData.class ? tagData.class : ""}'>
+                        <span>${tagData.label}</span>
+                    </div>`;
+                }
+            };
+        }
+
+        // Initialize Tagify with the prepared options
+        new Tagify(input, tagifyOptions);
     });
 </script>
 
@@ -108,6 +117,7 @@ USE:
         // ],
         'value' => '',
         'condition' => null,
+        'should_be_in_list' => true,
         'cols' => '6',
     ],
 

@@ -9,6 +9,50 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends BaseController
 {
 
+    public function createFormBuilder($model)
+    {
+        return [
+            [
+                'formtype' => 'input',
+                'name' => 'name',
+                'id' => 'name',
+                'label' => 'name',
+                'placeholder' => 'enter name',
+                'type' => 'text',
+                'value' => $model['name'],
+                'required' => true,
+                'condition' => null,
+                'cols' => '6',
+            ],
+            [
+                'formtype' => 'input',
+                'name' => 'email',
+                'id' => 'email',
+                'label' => 'email',
+                'placeholder' => 'enter email',
+                'type' => 'email',
+                'value' => $model['email'],
+                'required' => true,
+                'condition' => null,
+                'cols' => '6',
+            ],
+            [
+                'formtype' => 'input',
+                'name' => 'password',
+                'id' => 'password',
+                'label' => 'password',
+                'placeholder' => 'enter password',
+                'type' => 'password',
+                'value' => $model['password'],
+                'required' => true,
+                'condition' => null,
+                'cols' => '6',
+            ],
+        ];
+    }
+
+
+
     public function datatableColumns()
     {
         return  [
@@ -110,15 +154,6 @@ class UserController extends BaseController
     //////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////
-
-
-    public function formData()
-    {
-        return [
-            'name', 'email', 'password',
-            // ['profile_photo_path', 'image']
-        ];
-    }
 
 
     public function store(Request $request)

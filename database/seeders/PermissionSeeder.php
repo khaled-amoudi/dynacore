@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +20,7 @@ class PermissionSeeder extends Seeder
 
 
 
-        $resources = ['category', 'post', 'item', 'user'];
+        $resources = ['category', 'post', 'item', 'user', 'car'];
         $crud_permissions = ['index-list', 'create', 'store', 'edit', 'update', 'show', 'destroy', 'force-delete', 'trash-list', 'restore'];
 
 
@@ -57,14 +58,22 @@ class PermissionSeeder extends Seeder
                 ]);
             }
         }
-
-        $role = Role::where('name', 'admin')->first();
+        $role = Role::firstOrCreate(['name' => 'admin']);
+        // $role = Role::where('name', 'admin')->first();
         // Ensure the role exists
         if ($role) {
             // Assign permissions to the role
             // $permissions = Permission::all();
             $permissions = Permission::whereIn('name', ['role', 'index-list-role', 'create-role', 'store-role', 'edit-role', 'update-role', 'destroy-role', 'manage-role'])->get();
             $role->syncPermissions($permissions);
+
+            $firstUser = User::first(); // Retrieves the first user from the users table
+            if ($firstUser) {
+                $firstUser->assignRole($role);
+                $this->command->info('Admin role assigned to the first user successfully.');
+            } else {
+                $this->command->error('No users found to assign the admin role.');
+            }
 
             $this->command->info('Permissions have been assigned to the role successfully.');
         } else {

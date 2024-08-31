@@ -188,7 +188,7 @@ class BaseController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $this->authorize('store-' . $this->resourceName());
 
         $request->validate($this->getRequest()->rules(), $this->getRequest()->messages());

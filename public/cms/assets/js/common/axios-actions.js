@@ -25,6 +25,7 @@ function x_store(url, data, redirectUrl = null) {
             if (error.response.data.errors !== undefined) {
                 toastr_showErrors(error.response.data.errors);
                 alert_showErrors(error.response.data.errors);
+                // showErrorMessages(error.response.data.errors);
 
             } else {
                 toastr_showMessage(error.response.data);
@@ -59,6 +60,7 @@ function x_store_cont(url, data) {
         .catch(function (error) {
             if (error.response.data.errors !== undefined) {
                 toastr_showErrors(error.response.data.errors);
+                alert_showErrors(error.response.data.errors);
             } else {
                 toastr_showMessage(error.response.data);
             }
@@ -101,6 +103,7 @@ function x_update(url, data, redirectUrl = null) {
         .catch(function (error) {
             if (error.response.data.errors !== undefined) {
                 toastr_showErrors(error.response.data.errors);
+                alert_showErrors(error.response.data.errors);
             } else {
                 toastr_showMessage(error.response.data);
             }
@@ -128,7 +131,7 @@ function x_delete(url, id) {
                 $("tr.del_" + id).remove();
 
                 // re draw the table after delete, to show the correct pagination.
-                $("#kt_datatable_example_1").DataTable().draw(true); // true: reset to the first page
+                $("#kt_datatable_example_1").DataTable().draw(false); // true: reset to the first page
             }, 500);
             toastr_showMessage(response.data);
         })
@@ -159,7 +162,7 @@ function x_force_delete(url, id) {
                 $("tr.del_" + id).remove();
 
                 // re draw the table after delete, to show the correct pagination.
-                $("#kt_datatable_example_1").DataTable().draw(true); // true: reset to the first page
+                $("#kt_datatable_example_1").DataTable().draw(false); // true: reset to the first page
             }, 500);
             toastr_showMessage(response.data);
         })
@@ -190,7 +193,7 @@ function x_restore(url, id) {
                 $("tr.del_" + id).remove();
 
                 // re draw the table after delete, to show the correct pagination.
-                $("#kt_datatable_example_1").DataTable().draw(true); // true: reset to the first page
+                $("#kt_datatable_example_1").DataTable().draw(false); // true: reset to the first page
             }, 500);
             toastr_showMessage(response.data);
         })
@@ -243,6 +246,7 @@ function x_delete_group(url, selected_ids) {
                 setTimeout(function () {
                     $("tr.del_" + recordId).remove();
                     $(".multiDeleteButton").hide();
+                    $("#kt_datatable_example_1").DataTable().draw(false);
                 }, 500);
             });
             toastr_showMessage(response.data);
@@ -291,3 +295,26 @@ function clearForm() {
     $("#create_form").trigger("reset");
     // document.getElementById("create_form").reset();
 }
+
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+// show error message under each input
+function showErrorMessages(errors) {
+    for (let field in errors) {
+        let inputElement = document.querySelector(`[name="${field}"]`);
+        let errorMessage = errors[field][0];
+
+        // Create a span element for the error message
+        let errorElement = document.createElement('span');
+        errorElement.className = 'text-danger'; // Add Bootstrap class for red text
+        errorElement.innerText = errorMessage;
+
+        // Insert the error message after the input element
+        if (inputElement) {
+            inputElement.classList.add('is-invalid'); // Add Bootstrap class for red border
+            inputElement.parentNode.appendChild(errorElement);
+        }
+    }
+}
+

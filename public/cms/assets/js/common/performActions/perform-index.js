@@ -16,7 +16,7 @@ function performDelete(id) {
         type: 'DELETE',
         success: function(result) {
             // On successful deletion, redraw the table
-            $('#kt_datatable_example_1').DataTable().draw(false);
+            $('#kt_datatable_example_1').DataTable().draw(true); // true: to refresh the table after delete an item
         },
         error: function(xhr) {
             // Handle error

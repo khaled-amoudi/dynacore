@@ -24,7 +24,7 @@ class CoreModel extends BaseModel
     ];
 
 
-    protected $images = [
+    public $imageable = [
         // 'image',
     ];
 

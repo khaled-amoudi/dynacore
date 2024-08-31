@@ -80,3 +80,22 @@ function alert_closeAlert() {
     });
 }
 
+function modal_alert_showErrors(errors) {
+    const alertElement = $("#modal_form_errors_alert");
+    const errorListElement = $("#modal_form_errors_validation_list");
+    errorListElement.empty();
+    alertElement.removeClass("d-none").hide().fadeIn(500);
+    $.each(errors, function (key, messages) {
+        messages.forEach(function (message) {
+            const errorItem = $("<span>").text(message).hide();
+            errorListElement.append(errorItem);
+            errorItem.fadeIn(300);
+        });
+    });
+}
+function modal_alert_closeAlert() {
+    $("#modal_form_errors_alert").fadeOut(500, function() {
+        $(this).addClass('d-none'); // Add d-none after fade out
+    });
+}
+

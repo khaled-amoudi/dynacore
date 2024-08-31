@@ -3,6 +3,8 @@
     'label', // Label for the repeater
     'value' => [],
     'fields' => [], // Array of fields to be used in the table
+    'rules' => [],
+    'rules_ajax' => '',
     'cols' => '12',
     'condition' => null,
 ])
@@ -156,6 +158,10 @@
         let name = @json($name);
         document.getElementById('add-' + name + '-row').addEventListener('click', function() {
             let fields = @json($fields);
+            let rowData = {};
+            let rules = @json($rules);
+            let rules_ajax = @json($rules_ajax);
+
             let row = '<tr>';
             let hasValue = false; // Flag to check if any value is entered
 
@@ -179,12 +185,12 @@
                             let optionText = selectedOption.text;
                             let optionValue = selectedOption.value;
 
-                            value = optionText; // Display the text in the table
+                            value = optionValue; // Display the text in the table
 
                             row += `<td>
-                        ${optionText}
-                        <input type="hidden" name="${name}[{{ $loop->index }}][` + field.name + `]" value="${optionValue}">
-                    </td>`;
+                                        ${optionText}
+                                        <input type="hidden" name="${name}[{{ $loop->index }}][` + field.name + `]" value="${optionValue}">
+                                    </td>`;
 
                             // Clear the selection by resetting the index
                             for (let i = 0; i < inputElement.options.length; i++) {
@@ -209,6 +215,7 @@
                             break;
                         case 'switch':
                             const switchValue = inputElement.checked ? 1 : 0;
+                            value = switchValue;
 
                             row += `<td>
                                 <span class="badge ${switchValue ? 'badge-light-success' : 'badge-light-danger'} d-inline-block w-100">${switchValue ? '<i class="fa-solid fa-check text-success"></i>' : '<i class="fa-solid fa-x text-danger"></i>'}</span>
@@ -219,7 +226,6 @@
                             inputElement.checked = false;
                             break;
                         case 'checkbox':
-                            console.log('sdasd');
                             const checkedCheckboxes = document.querySelectorAll(
                                 'input[name="' + name + '_' + field.name + '[]"]:checked'
                             );
@@ -228,18 +234,20 @@
                                 checkedCheckboxes.forEach((checkbox) => {
                                     formData.append(name + '_' + field.name + "[]", checkbox.value);
                                 });
+                                value = checkedCheckboxes.join(', ');
 
                                 // Display "Yes" in the table badge
                                 row += `<td>
-                            <span class="badge badge-success d-inline-block w-100">Yes</span>
-                            <input type="hidden" name="${name}[{{ $loop->index }}][` + field.name + `]" value="${checkedCheckboxes.map(checkbox => checkbox.value).join(', ')}">
-                        </td>`;
+                                        <span class="badge badge-success d-inline-block w-100">Yes</span>
+                                        <input type="hidden" name="${name}[{{ $loop->index }}][` + field.name + `]" value="${checkedCheckboxes.map(checkbox => checkbox.value).join(', ')}">
+                                    </td>`;
                             } else {
+                                value = '';
                                 // Display "No" in the table badge
                                 row += `<td>
-                            <span class="badge badge-danger d-inline-block w-100">No</span>
-                            <input type="hidden" name="${name}[{{ $loop->index }}][` + field.name + `]" value="">
-                        </td>`;
+                                        <span class="badge badge-danger d-inline-block w-100">No</span>
+                                        <input type="hidden" name="${name}[{{ $loop->index }}][` + field.name + `]" value="">
+                                    </td>`;
                             }
 
                             // Clear checked checkboxes
@@ -299,6 +307,8 @@
                             break;
                     }
 
+                    rowData[field.name] = value;
+
                     // Clear the input value
                     if (['input', 'textarea', 'tagify'].includes(field
                             .formtype)) { // Corrected to field.formtype
@@ -319,14 +329,45 @@
                 }
             });
 
-            row +=
-                `<td><span class="badge badge-danger delete-row" style="cursor: pointer;" title="{{ __('common.delete') }}">{{ __('common.delete') }}</span></td>`;
-            row += '</tr>';
+            console.log(rowData);
 
-            document.querySelector('#table-' + name + ' tbody').insertAdjacentHTML('beforeend', row);
 
-            // Show the default row if all other rows are deleted
-            toggleDefaultRowVisibility();
+            // when the user click on add button, it will sed a request to validate the repeater data
+            $.ajax({
+                url: rules_ajax,
+                method: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    rowData,
+                    rules
+                },
+                success: function(response) {
+                    if (response.success) {
+                        row +=
+                            `<td><span class="badge badge-danger delete-row" style="cursor: pointer;" title="{{ __('common.delete') }}">{{ __('common.delete') }}</span></td>`;
+                        row += '</tr>';
+
+                        document.querySelector('#table-' + name + ' tbody').insertAdjacentHTML(
+                            'beforeend', row);
+
+                        // Show the default row if all other rows are deleted
+                        toggleDefaultRowVisibility();
+                    } else {
+                        // Show validation errors
+                        let errors = response.errors;
+                        // console.log(errors);
+
+                        toastr_showErrors(errors);
+
+                        // for (let field in errors) {
+                        //     toastr_showErrors(errors[field]);
+                        // }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX error:', status, error);
+                }
+            });
         });
 
 
@@ -388,6 +429,11 @@ USE:
     'value' => $model['items'],
     'label' => 'العناصر',
     'condition' => null,
+    'rules' => [
+        'name_en' => ['required'],
+        'is_active' => ['required']
+    ],
+    'rules_ajax' => route('dashboard.ajax.verifyRules'),
     'cols' => '12',
     'fields' => [
         [
@@ -431,6 +477,41 @@ USE:
             'condition' => null,
         ],
         [
+            'formtype' => 'textarea',
+            'name' => 'description_en',
+            'id' => 'description_en',
+            'label' => 'description_en',
+            'placeholder' => 'enter description_en',
+            'value' => '',
+            'required' => 'required',
+            'condition' => null,
+            'rows' => '3',
+            'cols' => '6'
+        ],
+        [
+            'formtype' => 'textarea',
+            'name' => 'description_ar',
+            'id' => 'description_ar',
+            'label' => 'description_ar',
+            'placeholder' => 'enter description_ar',
+            'value' => '',
+            'required' => 'required',
+            'condition' => null,
+            'rows' => '3',
+            'cols' => '6'
+        ],
+        [
+            'formtype' => 'switch',
+            'name' => 'is_active',
+            'id' => 'is_active',
+            'label' => 'is_active',
+            'placeholder' => 'is_active',
+            'value' => '',
+            'required' => 'required',
+            'condition' => null,
+            'cols' => '6'
+        ],
+        [
             'formtype' => 'image',
             'name' => 'image',
             'path' => 'storage/',
@@ -446,7 +527,8 @@ USE:
 #####################################
 handle it in controller as this:
 /// STORE
-foreach ($request['items'] as $item) {
+    if (!empty($request['items'])) {
+        foreach ($request['items'] as $item) {
             $model->items()->create([
                 'category_id' => $model->id,
                 'image' => null, // $this->uploadFile($request, $old_image = null, $filename = 'image', $disk = 'public', $path = '/'),
@@ -462,23 +544,25 @@ foreach ($request['items'] as $item) {
                 'status' => $item['status'],
             ]);
         }
-
+    }
 /// UPDATE
-$model->items()->delete();
-foreach ($request['items'] as $item) {
-    Item::create([
-        'category_id' => $model->id,
-        'image' => null, // $this->uploadFile($request, $old_image = null, $filename = 'image', $disk = 'public', $path = '/'),
-        'name' => [
-            'en' => $item['name_en'],
-            'ar' => $item['name_ar']
-        ],
-        'description' => [
-            'en' => $item['description_en'],
-            'ar' => $item['description_ar']
-        ],
-        'is_active' => 1, // $item['is_active'] == 'on' ? 1 : 0,
-        'status' => $item['status'],
-    ]);
-}
+    $model->items()->delete();
+    if (!empty($request['items'])) {
+        foreach ($request['items'] as $item) {
+            Item::create([
+                'category_id' => $model->id,
+                'image' => null, // $this->uploadFile($request, $old_image = null, $filename = 'image', $disk = 'public', $path = '/'),
+                'name' => [
+                    'en' => $item['name_en'],
+                    'ar' => $item['name_ar']
+                ],
+                'description' => [
+                    'en' => $item['description_en'],
+                    'ar' => $item['description_ar']
+                ],
+                'is_active' => $item['is_active'],
+                'status' => $item['status'],
+            ]);
+        }
+    }
 --}}

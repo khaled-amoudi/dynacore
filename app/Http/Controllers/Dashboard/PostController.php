@@ -7,6 +7,99 @@ use App\Models\User;
 
 class PostController extends BaseController
 {
+    public function createFormBuilder($model)
+    {
+        return [
+            [
+                'formtype' => 'input',
+                'name' => 'title_en',
+                'id' => 'title_en',
+                'label' => 'title_en',
+                'placeholder' => 'enter title_en',
+                'type' => 'text',
+                'value' => $model['title_en'],
+                'required' => true,
+                'condition' => null,
+                'cols' => '6',
+            ],
+            [
+                'formtype' => 'input',
+                'name' => 'title_ar',
+                'id' => 'title_ar',
+                'label' => 'title_ar',
+                'placeholder' => 'enter title_ar',
+                'type' => 'text',
+                'value' => $model['title_ar'],
+                'required' => true,
+                'condition' => null,
+                'cols' => '6',
+            ],
+            [
+                'formtype' => 'textarea',
+                'name' => 'description_en',
+                'id' => 'description_en',
+                'label' => 'description_en',
+                'placeholder' => 'enter description_en',
+                'value' => $model['description_en'],
+                'required' => 'required',
+                'condition' => null,
+                'rows' => '3',
+                'cols' => '12'
+            ],
+            [
+                'formtype' => 'textarea',
+                'name' => 'description_ar',
+                'id' => 'description_ar',
+                'label' => 'description_ar',
+                'placeholder' => 'enter description_ar',
+                'value' => $model['description_ar'],
+                'required' => 'required',
+                'condition' => null,
+                'rows' => '3',
+                'cols' => '12'
+            ],
+            [
+                'formtype' => 'select',
+                'name' => 'status',
+                'id' => 'status',
+                'label' => 'status',
+                'value' => $model['status'],
+                'options' => [
+                    '0' => 'pinned',
+                    '1' => 'published',
+                    '2' => 'blocked',
+                ],
+                'searchable' => true,
+                'allow_clear' => true,
+                'cols' => '6',
+                'condition' => null
+            ],
+            [
+                'formtype' => 'switch',
+                'name' => 'is_active',
+                'id' => 'is_active',
+                'label' => 'is_active',
+                'placeholder' => 'is_active',
+                'value' => $model['is_active'],
+                'required' => 'required',
+                'condition' => null,
+                'cols' => '6'
+            ],
+            [
+                'formtype' => 'image',
+                'name' => 'image',
+                'path' => 'storage/',
+                'label' => 'image upload',
+                'value' => $model['image'],
+                'required' => 'required',
+                'condition' => ['id' => 'is_active', 'value' => 'true'],
+                'cols' => '6',
+            ],
+        ];
+    }
+
+
+
 
     public function datatableColumns()
     {
@@ -64,7 +157,7 @@ class PostController extends BaseController
 
             ->addColumn('status', function ($row) {
                 $data['status'] = $row['status'];
-                return view('components.BaseComponents.layout.crud.parts.badges', $data)->render();
+                return view('dashboard.post.parts.status_badges', $data)->render();
             });
     }
     public $rawColumns = ['image', 'is_active', 'status'];
@@ -104,7 +197,10 @@ class PostController extends BaseController
                 ],
                 'select_filters' => [
                     [
-                        'name' => 'is_active', 'cols' => '3', 'default_option' => 'filter by is_active', 'options' => [
+                        'name' => 'is_active',
+                        'cols' => '3',
+                        'default_option' => 'filter by is_active',
+                        'options' => [
                             [
                                 'option_value' => '1',
                                 'option_label' => 'active',
@@ -116,7 +212,10 @@ class PostController extends BaseController
                         ]
                     ],
                     [
-                        'name' => 'status', 'cols' => '3', 'default_option' => 'filter by status', 'options' => [
+                        'name' => 'status',
+                        'cols' => '3',
+                        'default_option' => 'filter by status',
+                        'options' => [
                             [
                                 'option_value' => '0',
                                 'option_label' => 'pinned',
@@ -134,7 +233,10 @@ class PostController extends BaseController
                 ],
                 'select_relation_filters' => [
                     [
-                        'name' => 'user_id', 'cols' => '3', 'default_option' => 'filter by user', 'options' => [
+                        'name' => 'user_id',
+                        'cols' => '3',
+                        'default_option' => 'filter by user',
+                        'options' => [
                             'value_attr' => 'id',
                             'label_attr' => 'name',
                         ],
@@ -148,15 +250,6 @@ class PostController extends BaseController
     //////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////
-
-
-    public function formData()
-    {
-        return [
-            'title_en', 'title_ar', 'description_en', 'description_ar', ['is_active', 'switch'], 'status',
-            ['image', 'image']
-        ];
-    }
 
 
     public function setCreateResource($request)

@@ -25,6 +25,7 @@ function x_spa_store(url, data, redirectUrl = null) {
         .catch(function (error) {
             if (error.response.data.errors !== undefined) {
                 toastr_showErrors(error.response.data.errors);
+                alert_showErrors(error.response.data.errors);
             } else {
                 toastr_showMessage(error.response.data);
             }
@@ -64,6 +65,7 @@ function x_spa_update(url, data, redirectUrl = null) {
         .catch(function (error) {
             if (error.response.data.errors !== undefined) {
                 toastr_showErrors(error.response.data.errors);
+                alert_showErrors(error.response.data.errors);
             } else {
                 toastr_showMessage(error.response.data);
             }
@@ -139,6 +141,7 @@ function x_spa_alpha_update(url, data, redirectUrl = null) {
         .catch(function (error) {
             if (error.response.data.errors !== undefined) {
                 toastr_showErrors(error.response.data.errors);
+                alert_showErrors(error.response.data.errors);
             } else {
                 toastr_showMessage(error.response.data);
             }

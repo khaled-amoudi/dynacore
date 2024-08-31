@@ -146,16 +146,19 @@ class MakeCrud extends Command
             'menu_title' => '" . $this->toClassName($resource, false) . "',
             'menu_title_icon' => '',
             'active' => 'dashboard." . $resource . ".*',
+            'permission' => '" . $resource . "',
             'menu_title_list' => [
                 [
                     'route' => 'dashboard." . $resource . ".index',
                     'label' => '" . $this->toClassName($resource, false) . "',
                     'active' => 'dashboard." . $resource . ".index',
+                    'permission' => 'index-list-" . $resource . "',
                 ],
                 [
                     'route' => 'dashboard." . $resource . ".create',
                     'label' => 'Create " . $this->toClassName($resource, false) . "',
                     'active' => 'dashboard." . $resource . ".create',
+                    'permission' => 'create-" . $resource . "',
                 ],
             ],
         ],";

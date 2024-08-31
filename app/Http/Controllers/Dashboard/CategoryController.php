@@ -15,27 +15,30 @@ class CategoryController extends BaseController
     public function store(Request $request)
     {
         // dd($request->all());
+
         $this->authorize('store-' . $this->resourceName());
 
         $request->validate($this->getRequest()->rules(), $this->getRequest()->messages());
         $model = $this->getModel()::create($this->setCreateAttributes($request));
-
-        foreach ($request['items'] as $item) {
-            $model->items()->create([
-                'category_id' => $model->id,
-                'image' => null, // $this->uploadFile($request, $old_image = null, $filename = 'image', $disk = 'public', $path = '/'),
-                'name' => [
-                    'en' => $item['name_en'],
-                    'ar' => $item['name_ar']
-                ],
-                'description' => [
-                    'en' => $item['description_en'],
-                    'ar' => $item['description_ar']
-                ],
-                'is_active' => 1, // $item['is_active'] == 'on' ? 1 : 0,
-                'status' => $item['status'],
-            ]);
+        if (!empty($request['items'])) {
+            foreach ($request['items'] as $item) {
+                $model->items()->create([
+                    'category_id' => $model->id,
+                    'image' => null, // $this->uploadFile($request, $old_image = null, $filename = 'image', $disk = 'public', $path = '/'),
+                    'name' => [
+                        'en' => $item['name_en'],
+                        'ar' => $item['name_ar']
+                    ],
+                    'description' => [
+                        'en' => $item['description_en'],
+                        'ar' => $item['description_ar']
+                    ],
+                    'is_active' => $item['is_active'],
+                    'status' => $item['status'],
+                ]);
+            }
         }
+
         if (!$model) {
             return response()->json(['type' => 'error', 'message' => __('common.somthing_went_wrong')], 400);
         }
@@ -61,23 +64,24 @@ class CategoryController extends BaseController
         $newModel = $model->update($this->setUpdateAttributes($request, $old_image));
 
         $model->items()->delete();
-        foreach ($request['items'] as $item) {
-            Item::create([
-                'category_id' => $model->id,
-                'image' => null, // $this->uploadFile($request, $old_image = null, $filename = 'image', $disk = 'public', $path = '/'),
-                'name' => [
-                    'en' => $item['name_en'],
-                    'ar' => $item['name_ar']
-                ],
-                'description' => [
-                    'en' => $item['description_en'],
-                    'ar' => $item['description_ar']
-                ],
-                'is_active' => 1, // $item['is_active'] == 'on' ? 1 : 0,
-                'status' => $item['status'],
-            ]);
+        if (!empty($request['items'])) {
+            foreach ($request['items'] as $item) {
+                Item::create([
+                    'category_id' => $model->id,
+                    'image' => null, // $this->uploadFile($request, $old_image = null, $filename = 'image', $disk = 'public', $path = '/'),
+                    'name' => [
+                        'en' => $item['name_en'],
+                        'ar' => $item['name_ar']
+                    ],
+                    'description' => [
+                        'en' => $item['description_en'],
+                        'ar' => $item['description_ar']
+                    ],
+                    'is_active' => $item['is_active'],
+                    'status' => $item['status'],
+                ]);
+            }
         }
-
         if ($newModel) {
             return response()->json(['type' => 'success', 'message' => __('common.updated_successfully', ['model' => __($this->resourceName())])], 200);
         }
@@ -137,6 +141,11 @@ class CategoryController extends BaseController
                 'value' => $model['items'],
                 'label' => 'العناصر',
                 'condition' => null,
+                'rules' => [
+                    'name_en' => ['required'],
+                    'is_active' => ['required']
+                ],
+                'rules_ajax' => route('dashboard.ajax.verifyRules'),
                 'cols' => '12',
                 'fields' => [
                     [
@@ -294,7 +303,7 @@ class CategoryController extends BaseController
                     'with_soft_delete' => true,
                     'with_multi_delete' => true,
                     'with_exports' => true,
-                    'with_trans_switcher' => true,
+                    'with_trans_switcher' => false,
                 ]
             ],
             ///////////////////////////////

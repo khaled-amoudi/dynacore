@@ -4,14 +4,12 @@ use App\Http\Controllers\Dashboard\AjaxController\AjaxController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\ItemController;
 use App\Http\Controllers\Dashboard\PostController;
-use App\Http\Controllers\Dashboard\TestController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,7 +49,6 @@ Route::get('locale/{locale}', function ($locale) {
 Route::name('dashboard.')->prefix('/dashboard')->middleware(['auth'])->group(function () {
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings/update', [SettingController::class, 'update'])->name('settings.update');
-
     // Route::get('/role', [RoleController::class, 'index'])->name('role.index');
     // Route::get('/role/create', [RoleController::class, 'create'])->name('role.create');
     // Route::post('/role/store', [RoleController::class, 'store'])->name('role.store');
@@ -95,20 +92,16 @@ Route::name('dashboard.')->prefix('/dashboard')->middleware(['auth'])->group(fun
     });
 
 
-    Route::get('ajax/getOptions/{id?}', [AjaxController::class, 'getOptions'])->name('ajax.getOptions');
+    // Ajax
+    $ajaxGets = [
+        'getOptions',
+        'get_category_select',
+    ];
+
+    foreach ($ajaxGets as $ajaxGet) {
+        Route::get('ajax/' . $ajaxGet . '/{id?}', [AjaxController::class, $ajaxGet])->name('ajax.' . $ajaxGet);
+    }
+
+    Route::post('ajax/verifyRules/{id?}', [AjaxController::class, 'verifyRules'])->name('ajax.verifyRules');
+
 });
-
-
-
-// // Ajax
-// $ajaxGets = [
-//     'getOptions' => 'get',
-// ];
-
-// foreach ($ajaxGets as $ajaxGet => $method) {
-//     if ($method == 'get') {
-//         Route::get('ajax/' . $ajaxGet . '/{id?}', [AjaxController::class, $ajaxGet])->name('ajax.' . $ajaxGet);
-//     } else {
-//         Route::post('ajax/' . $ajaxGet . '/{id?}', 'Custom\AjaxGetController@' . $ajaxGet)->name('ajax.' . $ajaxGet);
-//     }
-// }
