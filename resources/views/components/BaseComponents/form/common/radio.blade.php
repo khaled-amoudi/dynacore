@@ -38,23 +38,25 @@
 </div>
 
 {{-- Docs
-    Author: khaled - 16/09/2022
+    Author: khaled - 31/08/2024
 _____________________________________________________________________________________
-    * name => input name, should be same as DB attr
-    * model => the Model (table) of this item, we use it to show data when editing
-    * label =>[OPTIONAL] input label
-    * options => array of values that need to be set as options in the checkboxes or radios [default = the current model]
-    * option_value_column => column of DB that need to be the value of this option [default = id]
-    * option_label_column => the label to show of this option [ default = name ]
-    * type => type on input [ checkbox OR radio ]
-
-
     Full EXAMPLE:-
-    <x-BaseComponents.form.common.checkbox_radio_dynamic name="status" :model="$category" type="checkbox" label="category status"
-    :options="$parents" option_value_column="id" option_label_column="name" display="col" />
+    [
+        'formtype' => 'radio',
+        'name' => 'type_radio',
+        'id' => 'type_radio',
+        'label' => 'type_radio',
+        'value' => '',
+        'display' => 'inline',
+        'options' => [
+            1 => 'label 1',
+            2 => 'label 2',
+            3 => 'label 3',
+        ],
+        'required' => 'required',
+        'condition' => null,
+        'cols' => '6',
+    ],
 
-    Less EXAMPLE:-
-    <x-BaseComponents.form.common.checkbox_radio_dynamic name="status" :model="$category"
-    :options="$parents" />
 _____________________________________________________________________________________
 --}}

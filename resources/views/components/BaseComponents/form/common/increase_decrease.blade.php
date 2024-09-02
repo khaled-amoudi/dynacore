@@ -51,21 +51,23 @@
         <small class="text-danger">{{ $message }}</small>
     @enderror
 </div>
+{{-- Docs
+    Author: khaled - 31/08/2024
+_____________________________________________________________________________________
+    Full EXAMPLE:-
+    [
+        'formtype' => 'increase_decrease',
+        'name' => 'increase_decrease',
+        'value' => '',
+        'label' => 'increase_decrease label',
+        'placeholder' => 'Amount',
+        'min_value' => '1',
+        'max_value' => '10',
+        'step_value' => '1',
+        'prefix_value' => '$',
+        'condition' => null,
+        'cols' => '6',
+    ]
 
-{{--
-USE:
- [
-    'formtype' => 'increase_decrease',
-    'name' => 'increase_decrease',
-    'value' => '',
-    'label' => 'increase_decrease label',
-    'placeholder' => 'Amount',
-    'min_value' => '1',
-    'max_value' => '10',
-    'step_value' => '1',
-    'prefix_value' => '$',
-    'condition' => null,
-    'cols' => '6',
-]
-
+_____________________________________________________________________________________
 --}}

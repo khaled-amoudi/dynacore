@@ -59,9 +59,12 @@
         <small class="text-danger">{{ $message }}</small>
     @enderror
 </div>
-{{--
-USE:
-    [
+
+{{-- Docs
+    Author: khaled - 31/08/2024
+_____________________________________________________________________________________
+    Full EXAMPLE:-
+[
         'formtype' => 'select',
         'name' => 'category_test',
         'id' => 'category_test',
@@ -88,28 +91,5 @@ USE:
         'cols' => '6',
         'condition' => null
     ]
---}}
-{{-- Docs
-    Author: khaled - 04/04/2023
-_____________________________________________________________________________________
-    * name => input name, should be same as DB attr
-    * model => the Model (table) of this item, we use it to show data when editing
-    * label =>[OPTIONAL] input label
-    * options => array of key=>value | the key is the value of the option,
-                                    and the value is the label of this option
-
-    Full EXAMPLE:-
-    <x-BaseComponents.form.common.select_fixed_search name="name" :model="$model" label="category name"
-    :options="[
-        'fixed' => 'Fixed',
-        'mobile' => 'Mobile'
-    ]" />
-
-    Less EXAMPLE:-
-    <x-BaseComponents.form.common.select_fixed_search name="name" :model="$model"
-    :options="[
-        'fixed' => 'Fixed',
-        'mobile' => 'Mobile'
-    ]" />
 _____________________________________________________________________________________
 --}}

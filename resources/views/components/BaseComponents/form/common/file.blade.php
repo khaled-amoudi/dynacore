@@ -32,8 +32,10 @@ $conditionValue = $condition['value'] ?? null;
     @endisset
 </div>
 
-{{--
-USE:
+{{-- Docs
+    Author: khaled - 31/08/2024
+_____________________________________________________________________________________
+    Full EXAMPLE:-
     [
         'formtype' => 'file',
         'name' => 'file',
@@ -44,22 +46,5 @@ USE:
         'condition' => null,
         'cols' => '6',
     ],
---}}
-
-{{--Docs
-    Author: khaled - 15/09/2022
-_____________________________________________________________________________________
-    * name => input name, should be same as DB attr.
-    * model => the Model (table) of this item, we use it to show data when editing.
-    * path =>[DEFAULT = storage/] the folder path to store the uploaded images.
-    * label =>[OPTIONAL] input label.
-    * placeholder =>[OPTIONAL] input placehoder.
-
-    Full EXAMPLE:-
-    <x-BaseComponents.form.common.file name="file" :model="$category" path="storage/" label="category name" placeholder="Enter category name" />
-
-    Less EXAMPLE:-
-    <x-BaseComponents.form.common.file name="file" :model="$category" />
 _____________________________________________________________________________________
 --}}
-

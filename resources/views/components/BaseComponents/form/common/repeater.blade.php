@@ -62,67 +62,41 @@
             </div>
         </div>
     </div>
-{{--
+    {{--
     @error($name)
         <small class="text-danger">{{ $message }}</small>
     @enderror --}}
 </div>
 
-
-{{--
-
-USE:
-[
-    'formtype' => 'repeater',
-    'name' => 'items',
-    // 'value' => '',
-    'label' => 'العناصر',
-    'condition' => null,
-    'cols' => '12',
-    'fields' => [
-        [
-            'formtype' => 'input',
-            'name' => 'name_en',
-            'id' => 'name_en',
-            'label' => 'name_en',
-            'placeholder' => 'enter name_en',
-            'type' => 'text',
-            'value' => $model['name_en'],
-            'required' => true,
-            'condition' => null,
-            'cols' => '4',
-        ],
-        [
-            'formtype' => 'select',
-            'name' => 'status',
-            'id' => 'status',
-            'label' => 'status',
-            'value' => $model['status'],
-            'options' => [
-                '0' => 'pinned',
-                '1' => 'published',
-                '2' => 'blocked',
+{{-- Docs
+    Author: khaled - 31/08/2024
+_____________________________________________________________________________________
+    Full EXAMPLE:-
+    [
+        'formtype' => 'repeater',
+        'name' => 'items',
+        // 'value' => '',
+        'label' => 'العناصر',
+        'condition' => null,
+        'cols' => '12',
+        'fields' => [
+            [
+                'formtype' => 'input',
+                'name' => 'name_en',
+                'id' => 'name_en',
+                'label' => 'name_en',
+                'placeholder' => 'enter name_en',
+                'type' => 'text',
+                'value' => $model['name_en'],
+                'required' => true,
+                'condition' => null,
+                'cols' => '4',
             ],
-            'searchable' => true,
-            'allow_clear' => true,
-            'cols' => '4',
-            'condition' => null,
-        ],
-        [
-            'formtype' => 'switch',
-            'name' => 'is_active',
-            'id' => 'is_active',
-            'label' => 'is_active',
-            'placeholder' => 'is_active',
-            'value' => $model['is_active'],
-            'required' => 'required',
-            'condition' => null,
-            'cols' => '6'
-        ],
+        ]
     ]
-]
 
-##############################################################
+
+    ##############################################################
 Controller Store: (Relation)
 
     // Validation:
@@ -151,4 +125,5 @@ Controller Store: (Json):
         'category_details' => json_encode($categoryDetails),
         'names_details' => json_encode($nameDetails),
     ]);
+_____________________________________________________________________________________
 --}}

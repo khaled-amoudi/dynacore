@@ -25,4 +25,14 @@ class BaseRequest extends FormRequest
     {
         return [];
     }
+
+    public function messages()
+    {
+        return [];
+    }
+
+    public function attributes()
+    {
+        return [];
+    }
 }

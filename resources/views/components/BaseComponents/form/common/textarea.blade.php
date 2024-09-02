@@ -30,9 +30,10 @@
         <small class="text-danger">{{ $message }}</small>
     @enderror
 </div>
-
-{{--
-USE:
+{{-- Docs
+    Author: khaled - 31/08/2024
+_____________________________________________________________________________________
+    Full EXAMPLE:-
     [
         'formtype' => 'textarea',
         'name' => 'descripe',
@@ -45,5 +46,5 @@ USE:
         'rows' => '3',
         'cols' => '12'
     ],
+_____________________________________________________________________________________
 --}}
-{{-- <x-BaseComponents.form.common.textarea-editor name="description" :model="$model" label="Blog Description" /> --}}

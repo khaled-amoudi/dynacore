@@ -8,13 +8,76 @@ function performModalStore(modal_resource, ajax_for_new_options, name) {
     const data = JSON.parse(form.getAttribute("formData"));
     let modalFormData = new FormData();
 
-    console.log(url, data, modalFormData);
 
+    handleModalDataCollection(form, data, modalFormData);
+
+    x_modal_store(modal_resource, url, modalFormData, ajax_for_new_options, name);
+}
+
+function x_modal_store(
+    modal_resource,
+    url,
+    modalFormData,
+    ajax_for_new_options,
+    name
+) {
+    // disable save button to prevent multi create
+    const modalSaveBtn = $("#submit_modal_create_form_" + modal_resource);
+    modalSaveBtn.prop("disabled", true);
+    modalSaveBtn.attr("data-kt-indicator", "on");
+
+    axios
+        .post(url, modalFormData)
+        .then(function (response) {
+            toastr_showMessage(response.data);
+            $("#" + modal_resource).modal("hide");
+
+            axios
+                .get(ajax_for_new_options)
+                .then(function (response) {
+                    console.log('enter fetch options');
+                    const selectInput = document.getElementById(name);
+                    const options = response.data;
+
+                    // Clear the current options
+                    selectInput.innerHTML = "";
+                    // Populate the select with new options
+                    for (const [id, label] of Object.entries(options)) {
+                        const newOption = new Option(
+                            label,
+                            id
+                        );
+                        selectInput.add(newOption);
+                    }
+                    selectInput.selectedIndex = selectInput.options.length - 1;
+                    selectInput.dispatchEvent(new Event("change")); // Trigger change event for the select input
+                })
+                .catch(function (error) {
+                    console.error("Error fetching options:", error);
+                });
+        })
+        .catch(function (error) {
+            if (error.response.data.errors !== undefined) {
+                toastr_showErrors(error.response.data.errors);
+                modal_alert_showErrors(error.response.data.errors);
+            } else {
+                toastr_showMessage(error.response.data);
+            }
+        })
+        .then(function () {
+            setTimeout(function () {
+                modalSaveBtn.prop("disabled", false);
+                modalSaveBtn.removeAttr("data-kt-indicator");
+            }, 2000);
+        });
+}
+
+
+function handleModalDataCollection(form, data, modalFormData) {
     for (let i = 0; i < data.length; i++) {
         let item = data[i];
         // console.log(item);
 
-        console.log(item);
 
         if (!Array.isArray(item)) {
             // If it's not an array, treat it as a regular input type
@@ -128,63 +191,4 @@ function performModalStore(modal_resource, ajax_for_new_options, name) {
             }
         }
     }
-    x_modal_store(modal_resource, url, modalFormData, ajax_for_new_options, name);
-}
-
-function x_modal_store(
-    modal_resource,
-    url,
-    modalFormData,
-    ajax_for_new_options,
-    name
-) {
-    // disable save button to prevent multi create
-    const modalSaveBtn = $("#submit_modal_create_form_" + modal_resource);
-    modalSaveBtn.prop("disabled", true);
-    modalSaveBtn.attr("data-kt-indicator", "on");
-
-    axios
-        .post(url, modalFormData)
-        .then(function (response) {
-            toastr_showMessage(response.data);
-            $("#" + modal_resource).modal("hide");
-
-            axios
-                .get(ajax_for_new_options)
-                .then(function (response) {
-                    console.log('enter fetch options');
-                    const selectInput = document.getElementById(name);
-                    const options = response.data;
-
-                    // Clear the current options
-                    selectInput.innerHTML = "";
-                    // Populate the select with new options
-                    for (const [id, label] of Object.entries(options)) {
-                        const newOption = new Option(
-                            label,
-                            id
-                        );
-                        selectInput.add(newOption);
-                    }
-                    selectInput.selectedIndex = selectInput.options.length - 1;
-                    selectInput.dispatchEvent(new Event("change")); // Trigger change event for the select input
-                })
-                .catch(function (error) {
-                    console.error("Error fetching options:", error);
-                });
-        })
-        .catch(function (error) {
-            if (error.response.data.errors !== undefined) {
-                toastr_showErrors(error.response.data.errors);
-                modal_alert_showErrors(error.response.data.errors);
-            } else {
-                toastr_showMessage(error.response.data);
-            }
-        })
-        .then(function () {
-            setTimeout(function () {
-                modalSaveBtn.prop("disabled", false);
-                modalSaveBtn.removeAttr("data-kt-indicator");
-            }, 2000);
-        });
 }

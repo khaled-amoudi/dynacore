@@ -199,7 +199,8 @@
         var resourceName = @json($data['resource_name']);
         var columns = @json($data['columns']);
         var filters = @json($data['table_data']['filters']);
-        var route = "/dashboard/" + resourceName + "/" + resourceName + "-trash-datatable/list";
+        var route = @json($data['datatable_trash_list_route']);
+        // var route = "/dashboard/" + resourceName + "/" + resourceName + "-trash-datatable/list";
     </script>
     <script>
         var noDataImage = "{{ asset('cms/assets/media/illustrations/sigma-1/15.png') }}";

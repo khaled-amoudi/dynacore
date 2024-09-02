@@ -221,7 +221,8 @@
         var resourceName = @json($data['resource_name']);
         var columns = @json($data['columns']);
         var filters = @json($data['table_data']['filters']);
-        var route = "/dashboard/" + resourceName + "/" + resourceName + "-datatable/list";
+        var route = @json($data['datatable_list_route']);
+        // var route = "/dashboard/" + resourceName + "/" + resourceName + "-datatable/list";
         var noDataImage = "{{ asset('cms/assets/media/illustrations/sigma-1/15.png') }}";
     </script>
 

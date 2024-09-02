@@ -73,9 +73,9 @@
         });
     </script>
 
+    <script src="{{ asset('cms/assets/js/common/js/form.js') }}"></script>
     <script src="{{ asset('cms/assets/js/common/performActions/perform-store.js') }}"></script>
     <script src="{{ asset('cms/assets/js/common/performActions/perform-modal-store.js') }}"></script>
-    <script src="{{ asset('cms/assets/js/common/js/form.js') }}"></script>
     <script src="{{ asset('cms/assets/plugins/custom/formrepeater/formrepeater.bundle.js') }}"></script>
     <script>
         $(document).ready(function() {

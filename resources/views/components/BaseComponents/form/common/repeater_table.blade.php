@@ -420,109 +420,38 @@
         toggleDefaultRowVisibility();
     </script>
 
-
-    {{--
-USE:
-[
-    'formtype' => 'repeater_table',
-    'name' => 'items',
-    'value' => $model['items'],
-    'label' => 'العناصر',
-    'condition' => null,
-    'rules' => [
-        'name_en' => ['required'],
-        'is_active' => ['required']
-    ],
-    'rules_ajax' => route('dashboard.ajax.verifyRules'),
-    'cols' => '12',
-    'fields' => [
-        [
-            'formtype' => 'input',
-            'name' => 'name_en',
-            'id' => 'name_en',
-            'label' => 'name_en',
-            'placeholder' => 'enter name_en',
-            'type' => 'text',
-            'value' => '',
-            'required' => true,
-            'condition' => null,
-            'cols' => '4',
+    {{-- Docs
+    Author: khaled - 31/08/2024
+_____________________________________________________________________________________
+    Full EXAMPLE:-
+    [
+        'formtype' => 'repeater_table',
+        'name' => 'items',
+        'value' => $model['items'],
+        'label' => 'العناصر',
+        'condition' => null,
+        'rules' => [
+            'name_en' => ['required'],
+            'is_active' => ['required']
         ],
-        [
-            'formtype' => 'input',
-            'name' => 'name_ar',
-            'id' => 'name_ar',
-            'label' => 'name_ar',
-            'placeholder' => 'enter name_ar',
-            'type' => 'text',
-            'value' => '',
-            'required' => 'required',
-            'condition' => null,
-            'cols' => '4',
-        ],
-        [
-            'formtype' => 'select',
-            'name' => 'status',
-            'id' => 'status',
-            'label' => 'status',
-            'value' => '',
-            'options' => [
-                '0' => 'pinned',
-                '1' => 'published',
-                '2' => 'blocked',
+        'rules_ajax' => route('dashboard.ajax.verifyRules'), // validate the form in ajax function in AjaxController
+        'cols' => '12',
+        'fields' => [
+            [
+                'formtype' => 'input',
+                'name' => 'name_en',
+                'id' => 'name_en',
+                'label' => 'name_en',
+                'placeholder' => 'enter name_en',
+                'type' => 'text',
+                'value' => '',
+                'required' => true,
+                'condition' => null,
+                'cols' => '4',
             ],
-            'searchable' => true,
-            'allow_clear' => true,
-            'cols' => '4',
-            'condition' => null,
-        ],
-        [
-            'formtype' => 'textarea',
-            'name' => 'description_en',
-            'id' => 'description_en',
-            'label' => 'description_en',
-            'placeholder' => 'enter description_en',
-            'value' => '',
-            'required' => 'required',
-            'condition' => null,
-            'rows' => '3',
-            'cols' => '6'
-        ],
-        [
-            'formtype' => 'textarea',
-            'name' => 'description_ar',
-            'id' => 'description_ar',
-            'label' => 'description_ar',
-            'placeholder' => 'enter description_ar',
-            'value' => '',
-            'required' => 'required',
-            'condition' => null,
-            'rows' => '3',
-            'cols' => '6'
-        ],
-        [
-            'formtype' => 'switch',
-            'name' => 'is_active',
-            'id' => 'is_active',
-            'label' => 'is_active',
-            'placeholder' => 'is_active',
-            'value' => '',
-            'required' => 'required',
-            'condition' => null,
-            'cols' => '6'
-        ],
-        [
-            'formtype' => 'image',
-            'name' => 'image',
-            'path' => 'storage/',
-            'label' => 'image upload',
-            'value' => '',
-            'required' => 'required',
-            'condition' => ['id' => 'items_is_active', 'value' => 'true'],
-            'cols' => '6',
-        ],
+        ]
     ]
-]
+
 
 #####################################
 handle it in controller as this:
@@ -565,4 +494,5 @@ handle it in controller as this:
             ]);
         }
     }
+_____________________________________________________________________________________
 --}}

@@ -55,11 +55,14 @@ class AppServiceProvider extends ServiceProvider
             Route::put($resource . '/restore/{id}', [$controller, 'restore'])->name($resource . '.restore');
             Route::delete($resource . '/force-delete/{id}', [$controller, 'forceDelete'])->name($resource . '.force-delete');
 
+            Route::post('/'.$resource.'/update/{id}', [$controller, 'update'])->name($resource.'.update');
+            Route::get('/'.$resource.'-datatable/list', [$controller, 'getDatatableIndex'])->name($resource.'.datatable');
+            Route::get('/'.$resource.'-trash-datatable/list', [$controller, 'getDatatableTrash'])->name($resource.'.trash-datatable');
+
             Route::resource($resource, $controller);
 
             // Route::get($resource.'-datatable/list', [$controller, 'getDatatableIndex'])->name($resource.'.datatable');
             // Route::get($resource.'-trash-datatable/list', [$controller, 'getDatatableTrash'])->name($resource.'.trash-datatable');
-
 
             // Route::post($resource.'/update/{id}' , [$controller, 'update'])->name($resource.'update');
 

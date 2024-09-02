@@ -70,6 +70,7 @@ class BaseController extends Controller
         $this->authorize('index-list-' . $this->resourceName());
 
         $data['resource_name'] = $this->resourceName();
+        $data['datatable_list_route'] = route('dashboard.'.$this->resourceName().'.datatable');
         $data['table_data'] = $this->tableOptions;
         $data['columns'] = array_merge($this->checkboxColumn(), $this->datatableColumns());
 
@@ -191,12 +192,12 @@ class BaseController extends Controller
         // dd($request->all());
         $this->authorize('store-' . $this->resourceName());
 
-        $request->validate($this->getRequest()->rules(), $this->getRequest()->messages());
-        $model = $this->getModel()::create($this->setCreateAttributes($request));
+        $request->validate($this->getRequest()->rules(), $this->getRequest()->messages(), $this->getRequest()->attributes());
+        // $model = $this->getModel()::create($this->setCreateAttributes($request));
 
-        if (!$model) {
-            return response()->json(['type' => 'error', 'message' => __('common.somthing_went_wrong')], 400);
-        }
+        // if (!$model) {
+        //     return response()->json(['type' => 'error', 'message' => __('common.somthing_went_wrong')], 400);
+        // }
         return response()->json(['type' => 'success', 'message' => __('common.created_successfully', ['model' => __($this->resourceName())])], 200);
     }
 
@@ -265,7 +266,7 @@ class BaseController extends Controller
         $old_image = count($model->getImageable()) == 1 ? $model[$model->getImageable()[0]] : $model->image;
 
 
-        $request->validate($this->getRequest()->rules($id), $this->getRequest()->messages());
+        $request->validate($this->getRequest()->rules($id), $this->getRequest()->messages(), $this->getRequest()->attributes());
 
 
         $newModel = $model->update($this->setUpdateAttributes($request, $old_image));
@@ -331,6 +332,7 @@ class BaseController extends Controller
         $this->authorize('trash-list-' . $this->resourceName());
 
         $data['resource_name'] = $this->resourceName();
+        $data['datatable_trash_list_route'] = route('dashboard.'.$this->resourceName().'.trash-datatable');
         $data['table_data'] = $this->tableOptions;
         $data['columns'] = $this->datatableColumns();
 

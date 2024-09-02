@@ -25,10 +25,10 @@
     @enderror
 </div>
 
-
-
-{{--
-USE:
+{{-- Docs
+    Author: khaled - 31/08/2024
+_____________________________________________________________________________________
+    Full EXAMPLE:-
     [
         'formtype' => 'switch',
         'name' => 'activation',
@@ -41,16 +41,6 @@ USE:
         'cols' => '6'
     ],
 
---}}
 
-{{-- Docs
-    Author: khaled - 16/09/2022
 _____________________________________________________________________________________
-    * name => input name, should be same as DB attr
-    * model => the Model (table) of this item, we use it to show data when editing
-    * label =>[OPTIONAL] input label
-
-    Full EXAMPLE:-
-    <x-BaseComponents.form.common.switch name="is_active" :model="$model" label="Is Active" />
-
-_____________________________________________________________________________________ --}}
+--}}

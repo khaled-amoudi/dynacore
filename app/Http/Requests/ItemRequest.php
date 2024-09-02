@@ -39,4 +39,11 @@ class ItemRequest
             // 'title.required' => __('title is required'),
         ];
     }
+    public function attributes()
+    {
+        return [
+            'name_en' => __('name_en'),
+            'name_ar' => __('name_ar'),
+        ];
+    }
 }

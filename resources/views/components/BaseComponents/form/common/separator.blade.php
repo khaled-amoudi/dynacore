@@ -1,5 +1,5 @@
-@props(['title' => false])
-<div class="mb-7 col-12">
+@props(['name', 'title' => false])
+<div class="mb-7 col-12" id="{{ $name }}">
     {{-- <div class="separator border my-10"></div> --}}
     <div class="{{ $title ? 'mt-10' : 'my-10' }}">
         <div>{{ $title }}</div>
@@ -7,13 +7,15 @@
     </div>
 </div>
 
-
-{{--
-USE:
+{{-- Docs
+    Author: khaled - 31/08/2024
+_____________________________________________________________________________________
+    Full EXAMPLE:-
     [
         'formtype' => 'separator',
         'name' => 'separator',
-        'title' => 'بيانات العميل'
+        'title' => 'بيانات العميل' // optional
     ],
 
+_____________________________________________________________________________________
 --}}

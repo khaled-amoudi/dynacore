@@ -44,9 +44,10 @@
             });
     });
 </script>
-
-{{--
-USE:
+{{-- Docs
+    Author: khaled - 31/08/2024
+_____________________________________________________________________________________
+    Full EXAMPLE:-
     [
         'formtype' => 'textarea-editor',
         'name' => 'descripe',
@@ -59,6 +60,6 @@ USE:
         'rows' => '3',
         'cols' => '12'
     ],
---}}
 
-{{-- <x-BaseComponents.form.common.textarea-editor name="description" :model="$model" label="Blog Description" /> --}}
+_____________________________________________________________________________________
+--}}

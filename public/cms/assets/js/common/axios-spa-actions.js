@@ -7,6 +7,7 @@ function x_spa_store(url, data, redirectUrl = null) {
     // disable save button to prevent multi create
     const saveBtn = $('button[type="submit"]');
     saveBtn.prop("disabled", true);
+    saveBtn.attr("data-kt-indicator", "on");
 
     axios
         .post(url, data)
@@ -15,10 +16,14 @@ function x_spa_store(url, data, redirectUrl = null) {
             if (redirectUrl != null) {
                 var delay = 1750;
                 setTimeout(function () {
-                    loadContent(redirectUrl, function () {
-                        // call the function that get the datatable in index page
-                        initializeDataTable();
+                    loadContent(redirectUrl).then(function() {
+                        $("#kt_datatable_example_1").DataTable().draw(false);
+                    }).catch(function(error) {
+                        console.error(error);
                     });
+                    // loadContent(redirectUrl).then(function() {
+                    //     $("#kt_datatable_example_1").DataTable().draw(false);
+                    // });
                 }, delay);
             }
         })
@@ -33,6 +38,7 @@ function x_spa_store(url, data, redirectUrl = null) {
         .then(function () {
             setTimeout(function () {
                 saveBtn.prop("disabled", false);
+                saveBtn.removeAttr("data-kt-indicator");
             }, 2000);
         });
 }
@@ -46,6 +52,7 @@ function x_spa_update(url, data, redirectUrl = null) {
     // disable save button to prevent multi create
     const saveBtn = $('button[type="submit"]');
     saveBtn.prop("disabled", true);
+    saveBtn.attr("data-kt-indicator", "on");
 
     axios
         .post(url, data, {
@@ -73,6 +80,7 @@ function x_spa_update(url, data, redirectUrl = null) {
         .then(function () {
             setTimeout(function () {
                 saveBtn.prop("disabled", false);
+                saveBtn.removeAttr("data-kt-indicator");
             }, 2000);
         });
 }
@@ -80,7 +88,35 @@ function x_spa_update(url, data, redirectUrl = null) {
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
+function loadContent2(url) {
+    return new Promise(function(resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
 
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // Update the content
+                var newContent = xhr.responseText;
+                document.getElementById("kt_body").innerHTML = newContent;
+                // Update the URL without refresh
+                history.pushState({}, "", url);
+
+                // Resolve the promise
+                resolve();
+            } else {
+                // If there's an error, reject the promise
+                reject("Failed to load content. Status: " + xhr.status);
+            }
+        };
+
+        xhr.onerror = function () {
+            // If there's a network error, reject the promise
+            reject("Network error.");
+        };
+
+        xhr.send();
+    });
+}
 // Function to load content without page refresh
 function loadContent(url, callback = null) {
     var xhr = new XMLHttpRequest();
@@ -180,8 +216,6 @@ function displayContent(content) {
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
 // Clear form of data
-
 function clearForm() {
     $("#create_form").trigger("reset");
-    // document.getElementById("create_form").reset();
 }

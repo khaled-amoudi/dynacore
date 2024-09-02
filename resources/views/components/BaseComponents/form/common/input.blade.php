@@ -30,9 +30,10 @@
         <small class="text-danger">{{ $message }}</small>
     @enderror
 </div>
-
-{{--
-USE:
+{{-- Docs
+    Author: khaled - 31/08/2024
+_____________________________________________________________________________________
+    Full EXAMPLE:-
     [
         'formtype' => 'input',
         'name' => 'name_en',
@@ -45,4 +46,5 @@ USE:
         'condition' => ['id' => 'is_active', 'value' => 'true'],
         'cols' => '6'
     ],
+_____________________________________________________________________________________
 --}}

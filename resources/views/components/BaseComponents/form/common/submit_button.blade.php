@@ -23,5 +23,4 @@ text="save"
 btn_color="btn-primary"/>
 _______________________________________________________________
 <x-BaseComponents.form.common.submit_button />
-
 --}}
